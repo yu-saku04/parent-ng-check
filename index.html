@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>親のNG行動チェック</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========== Top Screen ========== -->
+  <div id="screen-top" class="screen active">
+    <div class="container">
+      <header class="hero">
+        <p class="hero-eyebrow">関わり方を振り返るツール</p>
+        <h1 class="hero-title">親のNG行動<br>チェック</h1>
+        <p class="hero-desc">
+          このチェックは親を責めるためではなく、<br>
+          関わり方に気づくためのツールです。
+        </p>
+        <ul class="hero-meta">
+          <li>15問・約3分で完了</li>
+          <li>個人情報の入力は不要</li>
+          <li>スコアは保存されません</li>
+        </ul>
+        <button id="btn-start" class="btn btn-primary">診断を始める</button>
+      </header>
+    </div>
+  </div>
+
+  <!-- ========== Quiz Screen ========== -->
+  <div id="screen-quiz" class="screen">
+    <div class="container">
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div id="progress-fill" class="progress-fill"></div>
+        </div>
+        <span id="progress-label" class="progress-label">1 / 15</span>
+      </div>
+
+      <div id="question-card" class="card question-card">
+        <span id="q-number" class="q-number">Q1</span>
+        <p id="q-text" class="q-text"></p>
+        <div id="choices-list" class="choices-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== Result Screen ========== -->
+  <div id="screen-result" class="screen">
+    <div class="container">
+      <h2 class="result-heading">診断結果</h2>
+
+      <div class="card score-card">
+        <p class="score-label">総合スコア</p>
+        <div class="score-display">
+          <span id="total-score" class="score-number">0</span>
+          <span class="score-denom">/ 45点</span>
+        </div>
+        <span id="result-badge" class="result-badge"></span>
+        <p id="result-comment" class="result-comment"></p>
+      </div>
+
+      <div class="card">
+        <h3 class="card-heading">カテゴリ別スコア</h3>
+        <div id="category-list" class="category-list"></div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-heading">改善アドバイス</h3>
+        <p class="advice-note">スコアが高かった項目から表示しています。</p>
+        <div id="advice-list" class="advice-list"></div>
+      </div>
+
+      <p class="result-disclaimer">
+        このチェックは医療的な診断ではありません。<br>
+        あくまで気づきの参考としてご利用ください。
+      </p>
+
+      <button id="btn-retry" class="btn btn-secondary">もう一度チェックする</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
