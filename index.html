@@ -19,7 +19,7 @@
           関わり方に気づくためのツールです。
         </p>
         <ul class="hero-meta">
-          <li>15問・約3分で完了</li>
+          <li>12問・約2分で完了</li>
           <li>個人情報の入力は不要</li>
           <li>スコアは保存されません</li>
         </ul>
@@ -35,7 +35,7 @@
         <div class="progress-bar">
           <div id="progress-fill" class="progress-fill"></div>
         </div>
-        <span id="progress-label" class="progress-label">1 / 15</span>
+        <span id="progress-label" class="progress-label">1 / 12</span>
       </div>
 
       <div id="question-card" class="card question-card">
@@ -55,7 +55,7 @@
         <p class="score-label">総合スコア</p>
         <div class="score-display">
           <span id="total-score" class="score-number">0</span>
-          <span class="score-denom">/ 45点</span>
+          <span id="score-denom" class="score-denom">/ 48点</span>
         </div>
         <span id="result-badge" class="result-badge"></span>
         <p id="result-praise" class="result-praise"></p>
@@ -72,11 +72,15 @@
         <div id="advice-list" class="advice-list"></div>
       </div>
 
+      <!-- 育成ガイド チラ見せカード (JS で生成) -->
+      <div id="guide-section"></div>
+
       <p class="result-disclaimer">
         このチェックは医療的な診断ではありません。<br>
         あくまで気づきの参考としてご利用ください。
       </p>
 
+      <button id="btn-guide" class="btn btn-guide">📖 育成ガイドを購入する（¥980）</button>
       <button id="btn-retry" class="btn btn-secondary">もう一度チェックする</button>
     </div>
   </div>

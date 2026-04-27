@@ -5,7 +5,7 @@
 const QUESTIONS = [
   { id:  1, text: "子どもが考える前に指示してしまう",    category: "anticipation" },
   { id:  2, text: "話を最後まで聞かない",                category: "interrupting" },
-  { id:  3, text: "「早くしなさい」と言う",              category: "scolding"     },
+  { id:  3, text: "「早くしなさい」と急かしてしまう",    category: "scolding"     },
   { id:  4, text: "理由を聞く前に叱る",                  category: "scolding"     },
   { id:  5, text: "結果だけで評価する",                  category: "results"      },
   { id:  6, text: "他の子と比べる",                      category: "results"      },
@@ -15,60 +15,82 @@ const QUESTIONS = [
   { id: 10, text: "機嫌によって対応が変わる",            category: "emotion"      },
   { id: 11, text: "すぐに解決策を言う",                  category: "interrupting" },
   { id: 12, text: "子どもの感情を軽く扱う",              category: "scolding"     },
-  { id: 13, text: "スマホを見ながら話を聞く",            category: "interrupting" },
-  { id: 14, text: "できていない所ばかり見る",            category: "results"      },
-  { id: 15, text: "子どもをコントロールしようとする",    category: "anticipation" },
 ];
 
+// 5段階評価: 1=ない … 5=いつも
 const CHOICES = [
-  { label: "ほとんどない",  score: 0 },
-  { label: "たまにある",    score: 1 },
-  { label: "よくある",      score: 2 },
-  { label: "かなりある",    score: 3 },
+  { label: "1", score: 0 },
+  { label: "2", score: 1 },
+  { label: "3", score: 2 },
+  { label: "4", score: 3 },
+  { label: "5", score: 4 },
 ];
 
-// max = question count × 3
+const MAX_SCORE = QUESTIONS.length * CHOICES[CHOICES.length - 1].score; // 48
+
+// max = question count × 4
 const CATEGORIES = {
   anticipation: {
     name: "先回り・過干渉",
-    max: 12,
+    max: 12,  // 3問 × 4
     icon: "🌱",
     advice: "「どうしたい？」と一声かけてみましょう。子どもの意思を先に聞くだけで、関係が変わっていきます。",
     positive: "子どもに考える余地を与えられています。",
+    guide: {
+      title: "先回りをやめる実践ガイド",
+      tip: "子どもの「どうしたい？」を先に聞く習慣づけで、自主性と自信が育ちます。",
+    },
   },
   interrupting: {
     name: "話を遮る",
-    max: 9,
+    max: 8,   // 2問 × 4
     icon: "👂",
     advice: "最後まで聞くだけで、子どもの安心感が変わります。解決策より共感を先にしてみましょう。",
     positive: "子どもの話をしっかり最後まで聞けています。",
+    guide: {
+      title: "共感ファースト・聴き方ガイド",
+      tip: "「解決策より先に共感」で、子どもの話す意欲がグッと変わります。",
+    },
   },
   scolding: {
     name: "否定・叱責",
-    max: 9,
+    max: 12,  // 3問 × 4
     icon: "💬",
     advice: "行動だけを指摘し、人格は否定しないよう意識しましょう。「〇〇はやめて」より「〇〇してみよう」。",
     positive: "子どもへの言葉かけが穏やかにできています。",
+    guide: {
+      title: "叱らずに伝える言い換え術",
+      tip: "NGフレーズをポジティブな言葉に変えるだけで、子どもの反応が変わります。",
+    },
   },
   results: {
     name: "結果・比較",
-    max: 9,
+    max: 8,   // 2問 × 4
     icon: "⭐",
     advice: "結果より過程を見て、「頑張ったね」を大切に。他の子との比較は自己肯定感に影響します。",
     positive: "過程を見守る関わり方ができています。",
+    guide: {
+      title: "比べない・認める声かけ術",
+      tip: "「結果より過程」を褒める言葉が、子どもの自己肯定感を育てます。",
+    },
   },
   emotion: {
     name: "感情反応",
-    max: 6,
+    max: 8,   // 2問 × 4
     icon: "💛",
     advice: "感情的になることは誰にでもあります。後から「さっきはごめんね」と修復できれば十分です。",
     positive: "感情を安定させた関わり方ができています。",
+    guide: {
+      title: "感情コントロール・実践ガイド",
+      tip: "カッとなったときに使える「5秒ルール」と、関係を修復する言葉の習慣。",
+    },
   },
 };
 
+// スコア範囲: 0〜48
 const RESULT_TYPES = [
   {
-    min:  0, max: 10,
+    min:  0, max: 12,
     type: "安定型",
     comments: [
       "関わりが全体的に安定しています。このままの姿勢を大切にしていきましょう。",
@@ -79,7 +101,7 @@ const RESULT_TYPES = [
     color: "#6aab8e",
   },
   {
-    min: 11, max: 22,
+    min: 13, max: 24,
     type: "見直しポイントあり",
     comments: [
       "全体的にはうまく関われています。余裕がない時の対応だけ少し意識してみましょう。",
@@ -90,7 +112,7 @@ const RESULT_TYPES = [
     color: "#f0a500",
   },
   {
-    min: 23, max: 34,
+    min: 25, max: 36,
     type: "偏りあり",
     comments: [
       "いくつかのカテゴリに偏りが見られます。一番気になる点から取り組んでみましょう。",
@@ -101,7 +123,7 @@ const RESULT_TYPES = [
     color: "#e07b54",
   },
   {
-    min: 35, max: 45,
+    min: 37, max: 48,
     type: "要見直し",
     comments: [
       "余裕のなさが関わりに影響しているかもしれません。まずは自分を労うことから始めましょう。",
@@ -129,6 +151,7 @@ const screenQuiz   = document.getElementById("screen-quiz");
 const screenResult = document.getElementById("screen-result");
 const btnStart     = document.getElementById("btn-start");
 const btnRetry     = document.getElementById("btn-retry");
+const btnGuide     = document.getElementById("btn-guide");
 const progressFill = document.getElementById("progress-fill");
 const progressLabel= document.getElementById("progress-label");
 const questionCard = document.getElementById("question-card");
@@ -136,11 +159,16 @@ const qNumber      = document.getElementById("q-number");
 const qText        = document.getElementById("q-text");
 const choicesList  = document.getElementById("choices-list");
 const totalScore   = document.getElementById("total-score");
+const scoreDenom   = document.getElementById("score-denom");
 const resultBadge  = document.getElementById("result-badge");
 const resultPraise = document.getElementById("result-praise");
 const resultComment= document.getElementById("result-comment");
 const categoryList = document.getElementById("category-list");
 const adviceList   = document.getElementById("advice-list");
+const guideSection = document.getElementById("guide-section");
+
+// Set dynamic max score label
+scoreDenom.textContent = `/ ${MAX_SCORE}点`;
 
 // ===========================
 // Navigation
@@ -184,24 +212,35 @@ function renderQuestion(immediate) {
   qNumber.textContent = `Q${q.id}`;
   qText.textContent = q.text;
 
-  // Choices
+  // Choices: 5段階スケール（横並び円形ボタン）
   choicesList.innerHTML = "";
+
+  const scaleWrap = document.createElement("div");
+  scaleWrap.className = "scale-wrap";
+
+  const labels = document.createElement("div");
+  labels.className = "scale-labels";
+  labels.innerHTML = "<span>ない</span><span>いつも</span>";
+
+  const btnRow = document.createElement("div");
+  btnRow.className = "scale-buttons";
+
   CHOICES.forEach(choice => {
     const btn = document.createElement("button");
-    btn.className = "choice-btn";
-    btn.innerHTML = `
-      <span class="choice-label">${choice.label}</span>
-      <span class="choice-score">${choice.score}点</span>
-    `;
+    btn.className = "scale-btn";
+    btn.textContent = choice.label;
     btn.addEventListener("click", () => handleAnswer(choice.score, btn));
-    choicesList.appendChild(btn);
+    btnRow.appendChild(btn);
   });
+
+  scaleWrap.appendChild(labels);
+  scaleWrap.appendChild(btnRow);
+  choicesList.appendChild(scaleWrap);
 
   // Entrance animation
   questionCard.classList.remove("animate");
   void questionCard.offsetWidth;
   questionCard.classList.add("animate");
-  // Remove inline override after animation class is set so forwards fill-mode works
   if (!immediate) {
     questionCard.style.opacity = "";
   }
@@ -209,7 +248,7 @@ function renderQuestion(immediate) {
 
 function handleAnswer(score, selectedBtn) {
   // Disable all choices immediately to prevent double-tap
-  choicesList.querySelectorAll(".choice-btn").forEach(b => (b.disabled = true));
+  choicesList.querySelectorAll("button").forEach(b => (b.disabled = true));
   selectedBtn.classList.add("selected");
 
   answers.push(score);
@@ -319,6 +358,68 @@ function showResults() {
       adviceList.appendChild(item);
     });
   }
+
+  // --- Guide section (チラ見せ: 上位2件を無料公開、残りをブラー) ---
+  guideSection.innerHTML = "";
+
+  const guideCard = document.createElement("div");
+  guideCard.className = "card guide-card";
+  guideCard.innerHTML = `
+    <div class="guide-card-header">
+      <h3 class="card-heading guide-title">あなたへの育成ガイド</h3>
+      <span class="guide-price-tag">¥980</span>
+    </div>
+    <p class="guide-subtitle">診断結果をもとにした、具体的な改善プログラム</p>
+  `;
+
+  // 無料プレビュー: スコア上位2カテゴリ
+  sorted.slice(0, 2).forEach(([key, cat], i) => {
+    const item = document.createElement("div");
+    item.className = "guide-item guide-item-free";
+    item.innerHTML = `
+      <span class="guide-num">0${i + 1}</span>
+      <div>
+        <p class="guide-item-title">${cat.guide.title}</p>
+        <p class="guide-item-tip">${cat.guide.tip}</p>
+      </div>
+    `;
+    guideCard.appendChild(item);
+  });
+
+  // ロック済み: 残り3カテゴリをブラー表示
+  const lockedItems = sorted.slice(2);
+  if (lockedItems.length > 0) {
+    const lockedWrap = document.createElement("div");
+    lockedWrap.className = "guide-locked-wrap";
+
+    const blurList = document.createElement("div");
+    blurList.className = "guide-items-blur";
+    lockedItems.forEach(([key, cat], i) => {
+      const item = document.createElement("div");
+      item.className = "guide-item";
+      item.innerHTML = `
+        <span class="guide-num">0${i + 3}</span>
+        <div>
+          <p class="guide-item-title">${cat.guide.title}</p>
+          <p class="guide-item-tip">${cat.guide.tip}</p>
+        </div>
+      `;
+      blurList.appendChild(item);
+    });
+
+    const overlay = document.createElement("div");
+    overlay.className = "guide-lock-overlay";
+    overlay.innerHTML = `
+      <span class="guide-lock-icon">🔒</span>
+      <p class="guide-lock-text">残り${lockedItems.length}つのガイドが含まれます</p>
+    `;
+
+    lockedWrap.appendChild(blurList);
+    lockedWrap.appendChild(overlay);
+    guideCard.appendChild(lockedWrap);
+  }
+
+  guideSection.appendChild(guideCard);
 
   showScreen(screenResult);
 
