@@ -325,6 +325,15 @@ body {
   margin-bottom: 16px;
 }
 
+.result-praise {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #6aab8e;
+  line-height: 1.65;
+  max-width: 360px;
+  margin: 0 auto 10px;
+}
+
 .result-comment {
   font-size: 0.92rem;
   color: #555;
@@ -439,6 +448,34 @@ body {
   font-size: 0.88rem;
   color: #444;
   line-height: 1.65;
+}
+
+/* ===========================
+   Advice section labels & positive state
+=========================== */
+.advice-section-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #aaa;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 14px 0 8px;
+}
+
+.advice-section-label:first-child {
+  margin-top: 0;
+}
+
+.advice-section-positive {
+  color: #6aab8e;
+}
+
+.advice-positive {
+  background: #f0faf5;
+}
+
+.advice-name-positive {
+  color: #6aab8e;
 }
 
 /* ===========================

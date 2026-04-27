@@ -34,30 +34,35 @@ const CATEGORIES = {
     max: 12,
     icon: "🌱",
     advice: "「どうしたい？」と一声かけてみましょう。子どもの意思を先に聞くだけで、関係が変わっていきます。",
+    positive: "子どもに考える余地を与えられています。",
   },
   interrupting: {
     name: "話を遮る",
     max: 9,
     icon: "👂",
     advice: "最後まで聞くだけで、子どもの安心感が変わります。解決策より共感を先にしてみましょう。",
+    positive: "子どもの話をしっかり最後まで聞けています。",
   },
   scolding: {
     name: "否定・叱責",
     max: 9,
     icon: "💬",
     advice: "行動だけを指摘し、人格は否定しないよう意識しましょう。「〇〇はやめて」より「〇〇してみよう」。",
+    positive: "子どもへの言葉かけが穏やかにできています。",
   },
   results: {
     name: "結果・比較",
     max: 9,
     icon: "⭐",
     advice: "結果より過程を見て、「頑張ったね」を大切に。他の子との比較は自己肯定感に影響します。",
+    positive: "過程を見守る関わり方ができています。",
   },
   emotion: {
     name: "感情反応",
     max: 6,
     icon: "💛",
     advice: "感情的になることは誰にでもあります。後から「さっきはごめんね」と修復できれば十分です。",
+    positive: "感情を安定させた関わり方ができています。",
   },
 };
 
@@ -65,25 +70,45 @@ const RESULT_TYPES = [
   {
     min:  0, max: 10,
     type: "安定型",
-    comment: "関わりは安定しています。このまま継続していきましょう。",
+    comments: [
+      "関わりが全体的に安定しています。このままの姿勢を大切にしていきましょう。",
+      "子どもに寄り添う力がしっかり育っています。自信を持って接していきましょう。",
+      "穏やかな関わり方ができています。その姿勢が子どもの安心感につながっています。",
+    ],
+    praise: "話を聞く姿勢や感情への配慮がしっかりできています。",
     color: "#6aab8e",
   },
   {
     min: 11, max: 22,
     type: "見直しポイントあり",
-    comment: "一部に改善の余地があります。余裕がない時の対応を少し見直しましょう。",
+    comments: [
+      "全体的にはうまく関われています。余裕がない時の対応だけ少し意識してみましょう。",
+      "多くの場面では十分な関わりができています。気になる点から一つずつ整えましょう。",
+      "良いところがたくさんある中で、少し見直せる部分があります。焦らず取り組みましょう。",
+    ],
+    praise: "多くの場面で落ち着いた対応ができています。",
     color: "#f0a500",
   },
   {
     min: 23, max: 34,
     type: "偏りあり",
-    comment: "関わりに偏りがあります。まずは話をじっくり聞く時間を意識してみましょう。",
+    comments: [
+      "いくつかのカテゴリに偏りが見られます。一番気になる点から取り組んでみましょう。",
+      "気づけたことが大切な一歩です。苦手なパターンを一つ改善するだけで変わります。",
+      "毎日頑張っている中でのことです。焦らず、できることから少しずつ変えていきましょう。",
+    ],
+    praise: "このチェックに向き合えたこと自体、子どもを大切にしている証です。",
     color: "#e07b54",
   },
   {
     min: 35, max: 45,
     type: "要見直し",
-    comment: "余裕のなさが影響している可能性があります。焦らず、小さな改善から始めましょう。",
+    comments: [
+      "余裕のなさが関わりに影響しているかもしれません。まずは自分を労うことから始めましょう。",
+      "正直に向き合えたからこそのスコアです。その誠実さが変化につながります。",
+      "「気づくこと」が最初の変化です。焦らず、小さな一歩から始めていきましょう。",
+    ],
+    praise: "このチェックに最後まで向き合えた勇気を、自分に認めてあげましょう。",
     color: "#c55a4a",
   },
 ];
@@ -112,6 +137,7 @@ const qText        = document.getElementById("q-text");
 const choicesList  = document.getElementById("choices-list");
 const totalScore   = document.getElementById("total-score");
 const resultBadge  = document.getElementById("result-badge");
+const resultPraise = document.getElementById("result-praise");
 const resultComment= document.getElementById("result-comment");
 const categoryList = document.getElementById("category-list");
 const adviceList   = document.getElementById("advice-list");
@@ -144,6 +170,11 @@ btnRetry.addEventListener("click", () => {
 function renderQuestion(immediate) {
   const q = QUESTIONS[currentIndex];
 
+  // Hide card before DOM changes to prevent selected-state flash
+  if (!immediate) {
+    questionCard.style.opacity = "0";
+  }
+
   // Progress
   const pct = (currentIndex / QUESTIONS.length) * 100;
   progressFill.style.width = pct + "%";
@@ -167,12 +198,13 @@ function renderQuestion(immediate) {
   });
 
   // Entrance animation
-  if (!immediate) {
-    questionCard.classList.remove("animate");
-    // force reflow so the animation restarts
-    void questionCard.offsetWidth;
-  }
+  questionCard.classList.remove("animate");
+  void questionCard.offsetWidth;
   questionCard.classList.add("animate");
+  // Remove inline override after animation class is set so forwards fill-mode works
+  if (!immediate) {
+    questionCard.style.opacity = "";
+  }
 }
 
 function handleAnswer(score, selectedBtn) {
@@ -206,12 +238,14 @@ function showResults() {
 
   // Result type
   const result = RESULT_TYPES.find(r => total >= r.min && total <= r.max);
+  const comment = result.comments[Math.floor(Math.random() * result.comments.length)];
 
   // --- Score card ---
   totalScore.textContent = total;
   resultBadge.textContent = result.type;
   resultBadge.style.backgroundColor = result.color;
-  resultComment.textContent = result.comment;
+  resultPraise.textContent = result.praise;
+  resultComment.textContent = comment;
 
   // --- Category bars ---
   categoryList.innerHTML = "";
@@ -241,21 +275,50 @@ function showResults() {
     return (catScores[bKey] / bCat.max) - (catScores[aKey] / aCat.max);
   });
 
-  sorted.forEach(([key, cat]) => {
-    const pct = catScores[key] / cat.max;
-    const isPriority = pct >= 0.5;
+  const threshold = 0.34;
+  const doingWell = sorted.filter(([key]) => catScores[key] / CATEGORIES[key].max < threshold);
+  const needsWork = sorted.filter(([key]) => catScores[key] / CATEGORIES[key].max >= threshold);
 
+  // Always show at least one positive item (fallback: lowest-scoring category)
+  const praiseItems = doingWell.length > 0 ? doingWell : [sorted[sorted.length - 1]];
+
+  const sectionLabel = (text, mod) => {
+    const p = document.createElement("p");
+    p.className = "advice-section-label" + (mod ? ` ${mod}` : "");
+    p.textContent = text;
+    return p;
+  };
+
+  adviceList.appendChild(sectionLabel("できていること", "advice-section-positive"));
+  praiseItems.forEach(([key, cat]) => {
     const item = document.createElement("div");
-    item.className = "advice-item" + (isPriority ? " advice-priority" : "");
+    item.className = "advice-item advice-positive";
     item.innerHTML = `
       <span class="advice-icon">${cat.icon}</span>
       <div>
-        <p class="advice-category-name">${cat.name}</p>
-        <p class="advice-text">${cat.advice}</p>
+        <p class="advice-category-name advice-name-positive">${cat.name}</p>
+        <p class="advice-text">${cat.positive}</p>
       </div>
     `;
     adviceList.appendChild(item);
   });
+
+  if (needsWork.length > 0) {
+    adviceList.appendChild(sectionLabel("見直しポイント", ""));
+    needsWork.forEach(([key, cat]) => {
+      const pct = catScores[key] / cat.max;
+      const item = document.createElement("div");
+      item.className = "advice-item" + (pct >= 0.67 ? " advice-priority" : "");
+      item.innerHTML = `
+        <span class="advice-icon">${cat.icon}</span>
+        <div>
+          <p class="advice-category-name">${cat.name}</p>
+          <p class="advice-text">${cat.advice}</p>
+        </div>
+      `;
+      adviceList.appendChild(item);
+    });
+  }
 
   showScreen(screenResult);
 
