@@ -220,61 +220,62 @@ body {
 }
 
 /* ===========================
-   Scale Buttons (5段階評価)
+   Choice Buttons (4択)
 =========================== */
 .choices-list {
-  /* container unchanged */
-}
-
-.scale-wrap {
-  width: 100%;
-}
-
-.scale-labels {
   display: flex;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  color: #bbb;
-  margin-bottom: 8px;
-  padding: 0 3px;
-}
-
-.scale-buttons {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  flex-direction: column;
   gap: 8px;
 }
 
-.scale-btn {
-  aspect-ratio: 1;
-  border: 2px solid #e4e3dc;
-  border-radius: 50%;
+.choice-btn {
+  width: 100%;
+  padding: 13px 16px;
   background: #fafaf6;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #666;
+  border: 2px solid #e4e3dc;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #444;
   cursor: pointer;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  text-align: left;
   font-family: inherit;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
 }
 
-.scale-btn:hover:not(:disabled) {
+.choice-btn:hover:not(:disabled) {
   border-color: #4a90d9;
   background: #f0f6ff;
   color: #4a90d9;
 }
 
-.scale-btn.selected {
+.choice-btn.selected {
   border-color: #4a90d9;
   background: #4a90d9;
   color: #fff;
 }
 
-.scale-btn:disabled {
+.choice-btn:disabled {
   cursor: default;
+}
+
+/* ===========================
+   Back Button
+=========================== */
+.btn-back {
+  background: transparent;
+  color: #aaa;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 10px;
+  box-shadow: none;
+  margin-top: 4px;
+}
+
+.btn-back:hover {
+  color: #555;
+  background: transparent;
+  box-shadow: none;
 }
 
 /* ===========================
