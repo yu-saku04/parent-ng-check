@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="子どもへの関わり方を振り返り、気づきを得るための簡易チェックです。12問・約2分で完了します。">
   <title>親のNG行動チェック</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -11,34 +12,60 @@
   <!-- ========== Top Screen ========== -->
   <div id="screen-top" class="screen active">
     <div class="container">
-      <header class="hero">
-        <p class="hero-eyebrow">関わり方を振り返るツール</p>
-        <h1 class="hero-title">親のNG行動<br>チェック</h1>
-        <p class="hero-desc">
-          このチェックは親を責めるためではなく、<br>
-          関わり方に気づくためのツールです。
-        </p>
-        <ul class="hero-meta">
-          <li>12問・約2分で完了</li>
-          <li>個人情報の入力は不要</li>
-          <li>スコアは保存されません</li>
-        </ul>
-        <button id="btn-start" class="btn btn-primary">診断を始める</button>
+      <header class="top-header">
+        <span class="logo-icon">🔍</span>
+        <h1 class="service-title">親のNG行動チェック</h1>
+        <p class="service-tagline">関わり方を振り返るためのツール</p>
       </header>
+
+      <main class="top-main">
+        <div class="intro-card">
+          <p class="intro-text">
+            このチェックは親を責めるためではなく、<br>
+            <strong>関わり方に気づくため</strong>のツールです。
+          </p>
+          <div class="time-badge">⏱ 12問・約2分で完了</div>
+        </div>
+
+        <div class="features">
+          <div class="feature-item">
+            <span class="feature-icon">📋</span>
+            <span>全12問の選択式質問</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">📊</span>
+            <span>5つのカテゴリで傾向を分析</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">💬</span>
+            <span>関わり方を改善するヒントを提案</span>
+          </div>
+        </div>
+
+        <button id="btn-start" class="btn-primary">診断を始める</button>
+
+        <p class="disclaimer">
+          ※このチェックは医療的な診断ではありません。<br>
+          気づきの参考としてご活用ください。<br>
+          入力内容は外部に送信されません。
+        </p>
+      </main>
     </div>
   </div>
 
   <!-- ========== Quiz Screen ========== -->
   <div id="screen-quiz" class="screen">
     <div class="container">
-      <div class="progress-wrap">
-        <div class="progress-bar">
+      <div class="question-header">
+        <div class="question-counter">
+          <span id="progress-label">1 / 12</span>
+        </div>
+        <div class="progress-bar-container">
           <div id="progress-fill" class="progress-fill"></div>
         </div>
-        <span id="progress-label" class="progress-label">1 / 12</span>
       </div>
 
-      <div id="question-card" class="card question-card">
+      <div id="question-card" class="question-card">
         <span id="q-number" class="q-number">Q1</span>
         <p id="q-text" class="q-text"></p>
         <div id="choices-list" class="choices-list"></div>
@@ -74,7 +101,7 @@
         <div id="advice-list" class="advice-list"></div>
       </div>
 
-      <!-- 育成ガイド チラ見せカード (JS で生成) -->
+      <!-- 育成ガイド (JS で生成) -->
       <div id="guide-section"></div>
 
       <p class="result-disclaimer">
