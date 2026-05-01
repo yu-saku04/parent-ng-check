@@ -576,28 +576,10 @@ body {
 /* ============================================================
    Guide Card
    ============================================================ */
-.guide-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 4px;
-}
-
 .guide-title {
   margin-bottom: 0;
   border-bottom: none;
   padding-bottom: 0;
-}
-
-.guide-price-tag {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #f0a500;
-  background: #fff8ee;
-  border: 1px solid #f0c050;
-  padding: 3px 10px;
-  border-radius: 20px;
-  white-space: nowrap;
 }
 
 .guide-subtitle {
@@ -643,18 +625,40 @@ body {
   line-height: 1.6;
 }
 
-/* Guide CTA button */
-.btn-guide {
-  background: linear-gradient(135deg, #f0a500 0%, #e07b54 100%);
-  color: #fff;
-  box-shadow: 0 4px 16px rgba(240, 165, 0, 0.35);
-  margin-top: 6px;
-  margin-bottom: 8px;
+/* ============================================================
+   Android Banner
+   ============================================================ */
+.android-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-top: 20px;
+  box-shadow: var(--shadow-sm);
 }
 
-.btn-guide:hover {
-  box-shadow: 0 4px 22px rgba(240, 165, 0, 0.5);
-  transform: translateY(-1px);
+.android-banner-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.android-banner-body {
+  flex: 1;
+}
+
+.android-banner-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 3px;
+}
+
+.android-banner-sub {
+  font-size: 12px;
+  color: #94a3b8;
 }
 
 /* ============================================================

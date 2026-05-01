@@ -150,7 +150,6 @@ const screenResult = document.getElementById("screen-result");
 const btnStart     = document.getElementById("btn-start");
 const btnBack      = document.getElementById("btn-back");
 const btnRetry     = document.getElementById("btn-retry");
-const btnGuide     = document.getElementById("btn-guide");
 const progressFill = document.getElementById("progress-fill");
 const progressLabel= document.getElementById("progress-label");
 const questionCard = document.getElementById("question-card");
@@ -360,11 +359,8 @@ function showResults() {
   const guideCard = document.createElement("div");
   guideCard.className = "card guide-card";
   guideCard.innerHTML = `
-    <div class="guide-card-header">
-      <h3 class="card-heading guide-title">あなたへの育成ガイド</h3>
-      <span class="guide-price-tag">¥980</span>
-    </div>
-    <p class="guide-subtitle">診断結果をもとにした、具体的な改善プログラム</p>
+    <h3 class="card-heading guide-title">あなたへの育成ガイド</h3>
+    <p class="guide-subtitle">診断結果をもとにした、カテゴリ別の改善ポイント</p>
   `;
 
   sorted.forEach(([key, cat], i) => {
